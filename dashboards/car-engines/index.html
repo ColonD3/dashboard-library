@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Car Engine Dashboard</title>
+<style>
+  :root{
+    --bg:#080b10;
+    --panel:#101722;
+    --panel2:#141e2c;
+    --text:#edf4ff;
+    --muted:#97a8bd;
+    --line:rgba(255,255,255,.12);
+    --accent:#ff4d2e;
+    --accent2:#00d1ff;
+    --good:#72f5a7;
+    --warn:#ffd166;
+    --danger:#ff5c7a;
+    --shadow:0 18px 50px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    background:
+      radial-gradient(circle at 15% 10%, rgba(255,77,46,.18), transparent 35%),
+      radial-gradient(circle at 90% 20%, rgba(0,209,255,.13), transparent 35%),
+      linear-gradient(135deg,#06080c,#0b111b 55%,#07090e);
+    color:var(--text);
+    min-height:100vh;
+  }
+  header{
+    padding:34px 28px 20px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+  }
+  h1{margin:0;font-size:clamp(2rem,5vw,4.7rem);letter-spacing:-.06em;line-height:.9}
+  .subtitle{color:var(--muted);max-width:620px;font-size:1rem;margin-top:12px;line-height:1.55}
+  .badge{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:999px;padding:10px 14px;color:#c6d6ea;font-weight:700;white-space:nowrap}
+  main{padding:12px 28px 34px;display:grid;grid-template-columns:1.2fr .8fr;gap:18px;max-width:1500px;margin:auto}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.075),rgba(255,255,255,.035));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden;backdrop-filter:blur(12px)}
+  .card h2{margin:0 0 4px;font-size:1.05rem;letter-spacing:-.02em}
+  .card p{margin:0;color:var(--muted);line-height:1.45}
+  .section-head{padding:20px 20px 0;display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+  .engine-wrap{padding:18px 20px 22px;display:grid;grid-template-columns:1fr 250px;gap:18px;align-items:center}
+  .engine{
+    position:relative;height:370px;border-radius:22px;background:
+      linear-gradient(180deg,rgba(0,0,0,.18),rgba(255,255,255,.03)),
+      repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 36px);
+    border:1px solid rgba(255,255,255,.1);overflow:hidden;
+  }
+  .block{position:absolute;left:10%;right:10%;bottom:20%;height:45%;border-radius:22px;background:linear-gradient(135deg,#253248,#111923);border:2px solid #34445d;box-shadow:inset 0 0 30px rgba(0,0,0,.45)}
+  .head{position:absolute;left:14%;right:14%;top:19%;height:18%;border-radius:18px;background:linear-gradient(135deg,#39495f,#17202d);border:2px solid #43536c}
+  .intake{position:absolute;left:8%;top:9%;width:35%;height:12%;border-radius:18px;background:linear-gradient(135deg,#1e8db1,#10465c);border:2px solid rgba(0,209,255,.35)}
+  .exhaust{position:absolute;right:8%;top:11%;width:35%;height:10%;border-radius:18px;background:linear-gradient(135deg,#9a3324,#451910);border:2px solid rgba(255,77,46,.35)}
+  .cylinder{position:absolute;bottom:29%;width:13%;height:32%;border-radius:14px;background:#0d121a;border:2px solid #42516a;overflow:hidden}
+  .cylinder:nth-child(1){left:18%}.cylinder:nth-child(2){left:34%}.cylinder:nth-child(3){left:50%}.cylinder:nth-child(4){left:66%}
+  .piston{position:absolute;left:9%;right:9%;height:34%;border-radius:10px;background:linear-gradient(180deg,#d5e0ee,#6e7e91);bottom:8%;animation:piston 1.25s ease-in-out infinite}
+  .cylinder:nth-child(2) .piston{animation-delay:-.3s}.cylinder:nth-child(3) .piston{animation-delay:-.62s}.cylinder:nth-child(4) .piston{animation-delay:-.92s}
+  @keyframes piston{0%,100%{transform:translateY(0)}50%{transform:translateY(-62px)}}
+  .spark{position:absolute;top:26%;width:14px;height:14px;border-radius:50%;background:var(--warn);box-shadow:0 0 20px var(--warn);opacity:.85;animation:spark .55s steps(2,end) infinite}
+  .s1{left:23.5%}.s2{left:39.5%;animation-delay:.14s}.s3{left:55.5%;animation-delay:.27s}.s4{left:71.5%;animation-delay:.41s}
+  @keyframes spark{50%{opacity:.1;transform:scale(.75)}}
+  .crank{position:absolute;left:21%;right:21%;bottom:12%;height:9%;border-radius:999px;background:linear-gradient(90deg,#757f91,#2e3746);border:2px solid #59697f}
+  .labels{display:grid;gap:10px}
+  .label{padding:12px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09)}
+  .label b{display:block;margin-bottom:3px}.label span{color:var(--muted);font-size:.9rem;line-height:1.35;display:block}
+  .controls{padding:0 20px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .control{padding:14px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid var(--line)}
+  .control label{display:flex;justify-content:space-between;color:#c7d7ea;font-weight:700;font-size:.9rem}.control input{width:100%;accent-color:var(--accent);margin-top:10px}
+  .gauges{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:20px}
+  .gauge{padding:18px;border-radius:22px;background:rgba(255,255,255,.045);border:1px solid var(--line);min-height:151px}
+  .gauge .top{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+  .value{font-size:2.4rem;font-weight:900;letter-spacing:-.05em;margin:14px 0 8px}.unit{font-size:1rem;color:var(--muted);font-weight:700;margin-left:4px}
+  .bar{height:12px;border-radius:999px;background:rgba(255,255,255,.09);overflow:hidden}.fill{height:100%;width:40%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:999px;transition:.25s ease}
+  .cycle{padding:20px;display:grid;gap:12px}.stroke{display:grid;grid-template-columns:42px 1fr;gap:12px;padding:13px;border-radius:18px;background:rgba(255,255,255,.045);border:1px solid var(--line)}
+  .num{width:42px;height:42px;border-radius:13px;background:rgba(255,77,46,.16);display:grid;place-items:center;font-weight:900;color:#ffc6bd}.stroke b{display:block;margin-bottom:3px}.stroke span{color:var(--muted);font-size:.92rem;line-height:1.35}
+  .types{grid-column:1/-1;padding:20px}.type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}.type{padding:16px;border-radius:20px;background:rgba(255,255,255,.045);border:1px solid var(--line);cursor:pointer;transition:.18s ease}.type:hover,.type.active{transform:translateY(-3px);border-color:rgba(0,209,255,.45);background:rgba(0,209,255,.08)}.type h3{margin:0 0 8px;font-size:1rem}.type p{font-size:.9rem}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.stat{background:rgba(0,0,0,.18);border-radius:14px;padding:10px}.stat strong{display:block;font-size:1.1rem}.stat span{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .footer-note{grid-column:1/-1;text-align:center;color:#7f8ea1;font-size:.9rem;padding:3px 0 0}
+  @media(max-width:1000px){main{grid-template-columns:1fr}.engine-wrap{grid-template-columns:1fr}.type-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:650px){header{display:block}.badge{display:inline-block;margin-top:16px}.controls,.gauges,.type-grid{grid-template-columns:1fr}.engine{height:310px}main{padding:10px 14px 24px}header{padding:26px 14px 12px}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Car Engine<br>Dashboard</h1>
+    <div class="subtitle">A compact, interactive dashboard for understanding what engines do: pull air in, squeeze it, ignite fuel, convert pressure into rotation, and send torque to the wheels.</div>
+  </div>
+  <div class="badge">Inline-4 Simulation · Gasoline Engine</div>
+</header>
+<main>
+  <section class="card">
+    <div class="section-head">
+      <div><h2>Animated Engine Cutaway</h2><p>Four cylinders moving through the intake, compression, power, and exhaust cycle.</p></div>
+    </div>
+    <div class="engine-wrap">
+      <div class="engine" aria-label="Animated four cylinder engine diagram">
+        <div class="intake"></div><div class="exhaust"></div><div class="head"></div><div class="block"></div>
+        <div class="cylinder"><div class="piston"></div></div><div class="cylinder"><div class="piston"></div></div><div class="cylinder"><div class="piston"></div></div><div class="cylinder"><div class="piston"></div></div>
+        <div class="spark s1"></div><div class="spark s2"></div><div class="spark s3"></div><div class="spark s4"></div><div class="crank"></div>
+      </div>
+      <div class="labels">
+        <div class="label"><b>Air + Fuel</b><span>Air enters through the intake. Fuel is mixed or injected so it can burn cleanly.</span></div>
+        <div class="label"><b>Combustion</b><span>A spark ignites the compressed mixture. Expanding gas punches the piston down.</span></div>
+        <div class="label"><b>Crankshaft</b><span>Piston motion becomes rotation, which eventually drives the wheels.</span></div>
+        <div class="label"><b>Exhaust</b><span>Burned gases leave through exhaust valves and the exhaust system.</span></div>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="control"><label>Throttle <span id="throttleVal">45%</span></label><input id="throttle" type="range" min="0" max="100" value="45"></div>
+      <div class="control"><label>RPM <span id="rpmVal">3200</span></label><input id="rpm" type="range" min="800" max="8000" value="3200"></div>
+      <div class="control"><label>Boost <span id="boostVal">0 psi</span></label><input id="boost" type="range" min="0" max="30" value="0"></div>
+    </div>
+  </section>
+
+  <aside class="card">
+    <div class="section-head"><div><h2>Live Engine Readout</h2><p>Drag the sliders and watch the engine numbers react.</p></div></div>
+    <div class="gauges">
+      <div class="gauge"><div class="top"><span>Power</span><span>HP</span></div><div class="value"><span id="hp">155</span><span class="unit">hp</span></div><div class="bar"><div id="hpFill" class="fill"></div></div></div>
+      <div class="gauge"><div class="top"><span>Torque</span><span>LB-FT</span></div><div class="value"><span id="torque">254</span><span class="unit">lb-ft</span></div><div class="bar"><div id="torqueFill" class="fill"></div></div></div>
+      <div class="gauge"><div class="top"><span>Heat Load</span><span>°C</span></div><div class="value"><span id="heat">88</span><span class="unit">°C</span></div><div class="bar"><div id="heatFill" class="fill"></div></div></div>
+      <div class="gauge"><div class="top"><span>Fuel Flow</span><span>L/H</span></div><div class="value"><span id="fuel">13.1</span><span class="unit">L/h</span></div><div class="bar"><div id="fuelFill" class="fill"></div></div></div>
+    </div>
+    <div class="cycle">
+      <div class="stroke"><div class="num">1</div><div><b>Intake</b><span>Piston moves down, intake valve opens, air/fuel enters.</span></div></div>
+      <div class="stroke"><div class="num">2</div><div><b>Compression</b><span>Piston moves up, squeezing the mixture into a tiny, powerful space.</span></div></div>
+      <div class="stroke"><div class="num">3</div><div><b>Power</b><span>Spark fires. Pressure spikes. Piston gets launched downward.</span></div></div>
+      <div class="stroke"><div class="num">4</div><div><b>Exhaust</b><span>Piston moves up again and pushes burned gases out.</span></div></div>
+    </div>
+  </aside>
+
+  <section class="card types">
+    <div class="section-head"><div><h2>Engine Type Comparison</h2><p>Click a type to compare the feel, packaging, and common use case.</p></div></div>
+    <div class="type-grid" id="typeGrid"></div>
+  </section>
+  <div class="footer-note">Built as a friend-shareable single-file dashboard. Open it in any browser.</div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const throttle = $('throttle'), rpm = $('rpm'), boost = $('boost');
+function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
+function update(){
+  const t=+throttle.value, r=+rpm.value, b=+boost.value;
+  $('throttleVal').textContent=t+'%'; $('rpmVal').textContent=r; $('boostVal').textContent=b+' psi';
+  const rpmCurve = Math.sin((r-800)/(8000-800)*Math.PI);
+  const torque = Math.round(85 + t*2.7 + b*8 + rpmCurve*45);
+  const hp = Math.round(torque*r/5252);
+  const heat = Math.round(72 + t*.24 + b*.95 + (r-800)/7200*26);
+  const fuel = (2.5 + t*.19 + b*.42 + (r-800)/7200*8).toFixed(1);
+  $('torque').textContent=torque; $('hp').textContent=hp; $('heat').textContent=heat; $('fuel').textContent=fuel;
+  $('torqueFill').style.width=clamp(torque/430*100,2,100)+'%';
+  $('hpFill').style.width=clamp(hp/520*100,2,100)+'%';
+  $('heatFill').style.width=clamp((heat-60)/80*100,2,100)+'%';
+  $('fuelFill').style.width=clamp(fuel/40*100,2,100)+'%';
+  document.querySelectorAll('.piston').forEach(p=>p.style.animationDuration=(1.8-(r-800)/7200*1.15)+'s');
+}
+[throttle,rpm,boost].forEach(x=>x.addEventListener('input',update)); update();
+const types=[
+  {name:'Inline-4',desc:'Light, efficient, cheap, common. Usually balanced enough but not super smooth.',stats:['Compact','Economy','Daily cars']},
+  {name:'V6',desc:'More power in a shorter package. Common in sporty cars, trucks, and SUVs.',stats:['Balanced','Mid power','SUVs/sports']},
+  {name:'V8',desc:'Big torque, deep sound, strong acceleration. Thirstier but emotionally illegal in the best way.',stats:['High torque','Muscle','Trucks']},
+  {name:'Flat-4 / Boxer',desc:'Low center of gravity and unique pulse. Famous in Subaru and Porsche layouts.',stats:['Low CG','Grip feel','AWD/sport']},
+  {name:'Turbocharged',desc:'Uses exhaust energy to cram more air in. More power from smaller displacement.',stats:['Boosted','Efficient power','Modern cars']},
+  {name:'Diesel',desc:'Compression ignition, huge torque, efficient under load. Great for hauling.',stats:['Torque','Efficient load','Trucks']},
+  {name:'Hybrid ICE',desc:'Gas engine plus electric motor. Electric torque fills gaps and improves efficiency.',stats:['Smooth','Efficient','City driving']},
+  {name:'Rotary',desc:'No pistons; triangular rotor. Tiny, smooth, high-revving, but needy.',stats:['High rev','Tiny','RX-style fun']}
+];
+const grid=$('typeGrid');
+types.forEach((x,i)=>{
+  const el=document.createElement('div'); el.className='type'+(i===0?' active':'');
+  el.innerHTML=`<h3>${x.name}</h3><p>${x.desc}</p><div class="stats">${x.stats.map(s=>`<div class="stat"><strong>${s}</strong><span>trait</span></div>`).join('')}</div>`;
+  el.onclick=()=>{document.querySelectorAll('.type').forEach(t=>t.classList.remove('active'));el.classList.add('active')};
+  grid.appendChild(el);
+});
+</script>
+</body>
+</html>
