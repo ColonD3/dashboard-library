@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Drive Test Remix</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #f7f7fb;
+      background: #080910;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(80, 116, 255, 0.35), transparent 30%),
+        radial-gradient(circle at 85% 85%, rgba(255, 85, 180, 0.22), transparent 35%),
+        linear-gradient(135deg, #080910, #141827 60%, #0b0c12);
+    }
+
+    .dashboard {
+      width: min(940px, 100%);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 28px;
+      padding: 28px;
+      background: rgba(14, 16, 27, 0.72);
+      box-shadow: 0 28px 90px rgba(0,0,0,0.45);
+      backdrop-filter: blur(18px);
+    }
+
+    .back {
+      display: inline-flex;
+      margin-bottom: 20px;
+      color: rgba(247,247,251,0.72);
+      text-decoration: none;
+      font-weight: 850;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(2rem, 5vw, 4.4rem);
+      letter-spacing: -0.07em;
+      line-height: 0.92;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: rgba(247, 247, 251, 0.68);
+      font-size: 1.05rem;
+      max-width: 580px;
+    }
+
+    .badge {
+      white-space: nowrap;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.82);
+      border: 1px solid rgba(255,255,255,0.13);
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .card {
+      min-height: 160px;
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.11);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .label {
+      color: rgba(247, 247, 251, 0.58);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 900;
+    }
+
+    .value {
+      margin-top: 16px;
+      font-size: 2.4rem;
+      letter-spacing: -0.06em;
+      font-weight: 950;
+    }
+
+    .note {
+      margin-top: 10px;
+      color: rgba(247, 247, 251, 0.64);
+      line-height: 1.35;
+    }
+
+    .wide { grid-column: span 2; }
+
+    .bar {
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,0.12);
+      margin-top: 20px;
+    }
+
+    .fill {
+      height: 100%;
+      width: 76%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #83a2ff, #ff73c7);
+      transition: width 250ms ease;
+    }
+
+    button {
+      cursor: pointer;
+      margin-top: 18px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 950;
+      color: #090a10;
+      background: #f7f7fb;
+    }
+
+    @media (max-width: 760px) {
+      .top { flex-direction: column; }
+      .grid { grid-template-columns: 1fr; }
+      .wide { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+  <main class="dashboard">
+    <a class="back" href="../../">← Back to playground</a>
+
+    <section class="top">
+      <div>
+        <h1>Real Host Test</h1>
+        <p class="subtitle">This is the same spirit as the Drive test, but inside a proper static site where styling and JavaScript should actually behave.</p>
+      </div>
+      <div class="badge">GitHub Pages ready</div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="label">Status</div>
+        <div class="value">Alive</div>
+        <div class="note">If this looks dark and glassy, CSS is working.</div>
+      </article>
+
+      <article class="card">
+        <div class="label">Friction</div>
+        <div class="value">Tiny</div>
+        <div class="note">New dashboards can just be new folders.</div>
+      </article>
+
+      <article class="card">
+        <div class="label">Friend link</div>
+        <div class="value">Ready</div>
+        <div class="note">Share the dashboard URL directly.</div>
+      </article>
+
+      <article class="card wide">
+        <div class="label">Readiness meter</div>
+        <div class="value" id="meter">76%</div>
+        <div class="bar"><div class="fill" id="fill"></div></div>
+        <button onclick="randomize()">Randomize</button>
+      </article>
+
+      <article class="card">
+        <div class="label">JavaScript</div>
+        <div class="value" id="jsStatus">Checking…</div>
+        <div class="note">If this changes to “Works,” JS is running.</div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("jsStatus").textContent = "Works";
+
+    function randomize() {
+      const value = Math.floor(Math.random() * 101);
+      document.getElementById("meter").textContent = value + "%";
+      document.getElementById("fill").style.width = value + "%";
+    }
+  </script>
+</body>
+</html>
