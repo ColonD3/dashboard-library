@@ -1,19 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Model Comparison Dashboard — Clean v4</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Model Comparison Dashboard</title>
   <style>
     :root {
       --bg: #05070c;
-      --panel: rgba(12, 18, 27, 0.88);
-      --panel-soft: rgba(255, 255, 255, 0.035);
+      --panel: rgba(12, 18, 27, 0.9);
       --border: rgba(255, 255, 255, 0.105);
       --text: #f4f7fb;
       --muted: #9aa7b7;
       --track: rgba(255, 255, 255, 0.085);
-
       --chatgpt: #32e6b8;
       --claude: #ff9f50;
       --perplexity: #7fe7ff;
@@ -37,15 +35,9 @@
       padding: 38px 18px 52px;
     }
 
-    .wrap {
-      width: min(1180px, 100%);
-      margin: auto;
-    }
+    .wrap { width: min(1180px, 100%); margin: auto; }
 
-    header {
-      text-align: center;
-      margin-bottom: 26px;
-    }
+    header { text-align: center; margin-bottom: 26px; }
 
     h1 {
       margin: 0;
@@ -94,7 +86,7 @@
 
     .winner p {
       margin: 0;
-      max-width: 900px;
+      max-width: 940px;
       color: #dce7ef;
       font-size: clamp(1rem, 1.7vw, 1.25rem);
       line-height: 1.58;
@@ -142,8 +134,6 @@
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 18px 44px rgba(0,0,0,0.2);
     }
 
-    .card.wide { grid-column: span 2; }
-
     .card h3 {
       margin: 0 0 22px;
       display: flex;
@@ -165,10 +155,7 @@
       font-size: 1.4rem;
     }
 
-    .rows {
-      display: grid;
-      gap: 15px;
-    }
+    .rows { display: grid; gap: 15px; }
 
     .row {
       display: grid;
@@ -177,11 +164,7 @@
       align-items: center;
     }
 
-    .name {
-      color: #edf4f8;
-      font-weight: 780;
-      white-space: nowrap;
-    }
+    .name { color: #edf4f8; font-weight: 780; white-space: nowrap; }
 
     .track {
       height: 15px;
@@ -200,12 +183,7 @@
       box-shadow: 0 0 18px color-mix(in srgb, var(--model), transparent 50%);
     }
 
-    .score {
-      color: var(--model);
-      text-align: right;
-      font-size: 1.05rem;
-      font-weight: 950;
-    }
+    .score { color: var(--model); text-align: right; font-size: 1.05rem; font-weight: 950; }
 
     .summary {
       margin-top: 18px;
@@ -239,22 +217,12 @@
       font-weight: 700;
     }
 
-    .check {
-      color: var(--chatgpt);
-      font-weight: 950;
-    }
-
-    footer {
-      text-align: center;
-      color: var(--muted);
-      margin-top: 20px;
-      font-size: 0.93rem;
-    }
+    .check { color: var(--chatgpt); font-weight: 950; }
+    footer { text-align: center; color: var(--muted); margin-top: 20px; font-size: 0.93rem; }
 
     @media (max-width: 980px) {
       .model-colors { grid-template-columns: repeat(2, 1fr); }
       .grid { grid-template-columns: 1fr; }
-      .card.wide { grid-column: span 1; }
       .bullets { grid-template-columns: 1fr 1fr; }
     }
 
@@ -272,13 +240,13 @@
   <main class="wrap">
     <header>
       <h1>AI Model Comparison</h1>
-      <p class="subtitle">Custom Benchmark Summary</p>
+      <p class="subtitle">Custom Benchmark Summary · Wider Score Spread</p>
     </header>
 
     <section class="winner">
       <div class="winner-label">🏆 OVERALL WINNER</div>
       <h2>ChatGPT</h2>
-      <p>Best overall balance of intelligence, accuracy, caution, emotional intelligence, and practical usefulness. It consistently gave the strongest all-round performance in the custom benchmark, with especially strong synthesis, uncertainty handling, and day-to-day usefulness.</p>
+      <p>Best overall balance of intelligence, accuracy, caution, emotional intelligence, and practical usefulness. The scores are intentionally spread wider now, so each model’s actual strengths and weaknesses are more obvious instead of everything looking almost equally good.</p>
     </section>
 
     <section class="model-colors" aria-label="Model color key">
@@ -290,91 +258,78 @@
       <div class="chip" style="--model: var(--gemini)"><span class="dot"></span>Gemini</div>
     </section>
 
-    <section class="grid">
-      <article class="card" style="--accent: #32e6b8">
-        <h3><span class="icon">🧠</span>Intelligence</h3>
-        <div class="rows">
-          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:95%"></span></span><span class="score">95</span></div>
-          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:92%"></span></span><span class="score">92</span></div>
-          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:84%"></span></span><span class="score">84</span></div>
-          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:79%"></span></span><span class="score">79</span></div>
-          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:70%"></span></span><span class="score">70</span></div>
-          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:68%"></span></span><span class="score">68</span></div>
-        </div>
-      </article>
-
-      <article class="card" style="--accent: #7fe7ff">
-        <h3><span class="icon">&lt;/&gt;</span>Coding</h3>
-        <div class="rows">
-          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:94%"></span></span><span class="score">94</span></div>
-          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:91%"></span></span><span class="score">91</span></div>
-          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:78%"></span></span><span class="score">78</span></div>
-          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:74%"></span></span><span class="score">74</span></div>
-          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:73%"></span></span><span class="score">73</span></div>
-          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:67%"></span></span><span class="score">67</span></div>
-        </div>
-      </article>
-
-      <article class="card" style="--accent: #b17cff">
-        <h3><span class="icon">✎</span>Writing</h3>
-        <div class="rows">
-          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:95%"></span></span><span class="score">95</span></div>
-          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:92%"></span></span><span class="score">92</span></div>
-          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:81%"></span></span><span class="score">81</span></div>
-          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:76%"></span></span><span class="score">76</span></div>
-          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:71%"></span></span><span class="score">71</span></div>
-          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:69%"></span></span><span class="score">69</span></div>
-        </div>
-      </article>
-
-      <article class="card" style="--accent: #ff6fae">
-        <h3><span class="icon">♡</span>Emotional Intelligence</h3>
-        <div class="rows">
-          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:96%"></span></span><span class="score">96</span></div>
-          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:88%"></span></span><span class="score">88</span></div>
-          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:75%"></span></span><span class="score">75</span></div>
-          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:72%"></span></span><span class="score">72</span></div>
-          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:63%"></span></span><span class="score">63</span></div>
-          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:60%"></span></span><span class="score">60</span></div>
-        </div>
-      </article>
-
-      <article class="card" style="--accent: #ffd868">
-        <h3><span class="icon">🛡</span>Data Accuracy</h3>
-        <div class="rows">
-          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:93%"></span></span><span class="score">93</span></div>
-          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:86%"></span></span><span class="score">86</span></div>
-          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:84%"></span></span><span class="score">84</span></div>
-          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:72%"></span></span><span class="score">72</span></div>
-          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:66%"></span></span><span class="score">66</span></div>
-          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:64%"></span></span><span class="score">64</span></div>
-        </div>
-      </article>
-
-      <article class="card" style="--accent: #32e6b8">
-        <h3><span class="icon">⚡</span>Practical Usefulness</h3>
-        <div class="rows">
-          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:97%"></span></span><span class="score">97</span></div>
-          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:89%"></span></span><span class="score">89</span></div>
-          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:82%"></span></span><span class="score">82</span></div>
-          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:74%"></span></span><span class="score">74</span></div>
-          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:69%"></span></span><span class="score">69</span></div>
-          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:67%"></span></span><span class="score">67</span></div>
-        </div>
-      </article>
-    </section>
+    <section class="grid" id="cards"></section>
 
     <section class="summary">
-      <h3>Why ChatGPT Won</h3>
+      <h3>What the spread makes obvious</h3>
       <div class="bullets">
-        <div class="bullet"><span class="check">✓</span>Most balanced across all categories</div>
-        <div class="bullet"><span class="check">✓</span>Strongest practical usefulness</div>
-        <div class="bullet"><span class="check">✓</span>Best uncertainty handling</div>
-        <div class="bullet"><span class="check">✓</span>Most accurate and cautious overall</div>
+        <div class="bullet"><span class="check">✓</span>ChatGPT is the strongest all-rounder</div>
+        <div class="bullet"><span class="check">✓</span>Claude spikes hardest in writing and coding</div>
+        <div class="bullet"><span class="check">✓</span>Perplexity is mainly useful for research/data tasks</div>
+        <div class="bullet"><span class="check">✓</span>Grok, Gemini, and DeepSeek look more uneven</div>
       </div>
     </section>
 
-    <footer>Based on custom benchmark tests and comparative scoring. · Clean v4 · Added Practical Usefulness</footer>
+    <footer>Based on custom benchmark tests and comparative scoring. · Wider score spread v5</footer>
   </main>
+
+  <script>
+    const colors = {
+      ChatGPT: 'var(--chatgpt)',
+      Claude: 'var(--claude)',
+      Perplexity: 'var(--perplexity)',
+      Grok: 'var(--grok)',
+      DeepSeek: 'var(--deepseek)',
+      Gemini: 'var(--gemini)'
+    };
+
+    const metrics = [
+      {
+        title: 'Intelligence', icon: '🧠', accent: '#32e6b8',
+        rows: [['ChatGPT', 96], ['Claude', 90], ['Perplexity', 72], ['Grok', 68], ['DeepSeek', 61], ['Gemini', 58]]
+      },
+      {
+        title: 'Coding', icon: '</>', accent: '#7fe7ff',
+        rows: [['Claude', 96], ['ChatGPT', 88], ['DeepSeek', 78], ['Grok', 62], ['Perplexity', 55], ['Gemini', 50]]
+      },
+      {
+        title: 'Writing', icon: '✎', accent: '#b17cff',
+        rows: [['Claude', 97], ['ChatGPT', 88], ['Grok', 66], ['Perplexity', 60], ['Gemini', 57], ['DeepSeek', 52]]
+      },
+      {
+        title: 'Emotional Intelligence', icon: '♡', accent: '#ff6fae',
+        rows: [['ChatGPT', 98], ['Claude', 82], ['Gemini', 60], ['Perplexity', 48], ['Grok', 42], ['DeepSeek', 38]]
+      },
+      {
+        title: 'Data Accuracy', icon: '🛡', accent: '#ffd868',
+        rows: [['ChatGPT', 95], ['Perplexity', 88], ['Claude', 82], ['DeepSeek', 58], ['Grok', 56], ['Gemini', 52]]
+      },
+      {
+        title: 'Practical Usefulness', icon: '⚡', accent: '#32e6b8',
+        rows: [['ChatGPT', 98], ['Claude', 84], ['Perplexity', 76], ['Grok', 58], ['DeepSeek', 54], ['Gemini', 50]]
+      }
+    ];
+
+    const cards = document.getElementById('cards');
+
+    metrics.forEach(metric => {
+      const article = document.createElement('article');
+      article.className = 'card';
+      article.style.setProperty('--accent', metric.accent);
+      article.innerHTML = `
+        <h3><span class="icon">${metric.icon}</span>${metric.title}</h3>
+        <div class="rows">
+          ${metric.rows.map(([name, score]) => `
+            <div class="row" style="--model: ${colors[name]}">
+              <span class="name">${name}</span>
+              <span class="track"><span class="fill" style="width:${score}%"></span></span>
+              <span class="score">${score}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      cards.appendChild(article);
+    });
+  </script>
 </body>
 </html>
