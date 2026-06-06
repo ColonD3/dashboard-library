@@ -85,7 +85,7 @@
 
     .winner p {
       margin: 0;
-      max-width: 960px;
+      max-width: 980px;
       color: #dce7ef;
       font-size: clamp(1rem, 1.7vw, 1.25rem);
       line-height: 1.58;
@@ -239,73 +239,73 @@
   <main class="wrap">
     <header>
       <h1>AI Model Comparison</h1>
-      <p class="subtitle">Custom Benchmark Summary · Exaggerated Score Spread</p>
+      <p class="subtitle">Custom Benchmarks + Video-Steered Score Spread</p>
     </header>
 
     <section class="winner">
       <div class="winner-label">🏆 OVERALL WINNER</div>
       <h2>ChatGPT</h2>
-      <p>Best overall balance of intelligence, accuracy, caution, emotional intelligence, and practical usefulness. These scores are intentionally exaggerated for readability, and Perplexity is penalized heavily in accuracy because your benchmark found it hallucinated more than the others.</p>
+      <p>Best overall balance after blending your benchmark tests with the video results: strongest day-to-day assistant, best emotional/usefulness profile, very strong accuracy, and only slightly behind Claude in specialist writing/coding. Gemini gets a major boost for multimedia, integrations, and problem-solving; Grok gets a speed/directness/humor boost; Perplexity is heavily penalized for hallucination risk and context drift.</p>
     </section>
 
     <section class="model-colors" aria-label="Model color key">
       <div class="chip" style="--model: var(--chatgpt)"><span class="dot"></span>ChatGPT</div>
       <div class="chip" style="--model: var(--claude)"><span class="dot"></span>Claude</div>
-      <div class="chip" style="--model: var(--perplexity)"><span class="dot"></span>Perplexity</div>
-      <div class="chip" style="--model: var(--grok)"><span class="dot"></span>Grok</div>
-      <div class="chip" style="--model: var(--deepseek)"><span class="dot"></span>DeepSeek</div>
       <div class="chip" style="--model: var(--gemini)"><span class="dot"></span>Gemini</div>
+      <div class="chip" style="--model: var(--grok)"><span class="dot"></span>Grok</div>
+      <div class="chip" style="--model: var(--perplexity)"><span class="dot"></span>Perplexity</div>
+      <div class="chip" style="--model: var(--deepseek)"><span class="dot"></span>DeepSeek</div>
     </section>
 
     <section class="grid" id="cards"></section>
 
     <section class="summary">
-      <h3>What this version makes obvious</h3>
+      <h3>Video steering notes</h3>
       <div class="bullets">
-        <div class="bullet"><span class="check">✓</span>ChatGPT dominates as the all-rounder</div>
-        <div class="bullet"><span class="check">✓</span>Claude is the specialist for writing and coding</div>
-        <div class="bullet"><span class="check">✓</span>Perplexity gets punished for hallucination risk</div>
-        <div class="bullet"><span class="check">✓</span>Weaknesses are now visually obvious</div>
+        <div class="bullet"><span class="check">✓</span>Gemini boosted for media, integrations, and problem solving</div>
+        <div class="bullet"><span class="check">✓</span>Grok boosted for speed, directness, humor, and surprise usefulness</div>
+        <div class="bullet"><span class="check">✓</span>Claude remains elite for writing/coding/fact-checking but loses practical range</div>
+        <div class="bullet"><span class="check">✓</span>Perplexity punished for hallucinations and context drift despite citations</div>
       </div>
     </section>
 
-    <footer>Based on custom benchmark tests and comparative scoring. · Exaggerated spread v6</footer>
+    <footer>Based on custom benchmark tests plus supplied video benchmark summaries. · Video-steered v7</footer>
   </main>
 
   <script>
     const colors = {
       ChatGPT: 'var(--chatgpt)',
       Claude: 'var(--claude)',
-      Perplexity: 'var(--perplexity)',
+      Gemini: 'var(--gemini)',
       Grok: 'var(--grok)',
-      DeepSeek: 'var(--deepseek)',
-      Gemini: 'var(--gemini)'
+      Perplexity: 'var(--perplexity)',
+      DeepSeek: 'var(--deepseek)'
     };
 
     const metrics = [
       {
         title: 'Intelligence', icon: '🧠', accent: '#32e6b8',
-        rows: [['ChatGPT', 99], ['Claude', 88], ['Grok', 63], ['DeepSeek', 58], ['Gemini', 50], ['Perplexity', 46]]
+        rows: [['ChatGPT', 98], ['Claude', 88], ['Gemini', 82], ['Grok', 76], ['DeepSeek', 54], ['Perplexity', 45]]
       },
       {
         title: 'Coding', icon: '</>', accent: '#7fe7ff',
-        rows: [['Claude', 99], ['ChatGPT', 87], ['DeepSeek', 74], ['Grok', 54], ['Gemini', 41], ['Perplexity', 35]]
+        rows: [['Claude', 98], ['ChatGPT', 90], ['DeepSeek', 76], ['Gemini', 60], ['Grok', 55], ['Perplexity', 34]]
       },
       {
         title: 'Writing', icon: '✎', accent: '#b17cff',
-        rows: [['Claude', 99], ['ChatGPT', 87], ['Grok', 58], ['Gemini', 45], ['Perplexity', 38], ['DeepSeek', 34]]
+        rows: [['Claude', 98], ['ChatGPT', 91], ['Grok', 66], ['Gemini', 63], ['Perplexity', 38], ['DeepSeek', 34]]
       },
       {
         title: 'Emotional Intelligence', icon: '♡', accent: '#ff6fae',
-        rows: [['ChatGPT', 99], ['Claude', 76], ['Gemini', 48], ['Perplexity', 31], ['Grok', 29], ['DeepSeek', 24]]
+        rows: [['ChatGPT', 99], ['Claude', 80], ['Gemini', 78], ['Grok', 52], ['Perplexity', 32], ['DeepSeek', 25]]
       },
       {
         title: 'Data Accuracy', icon: '🛡', accent: '#ffd868',
-        rows: [['ChatGPT', 98], ['Claude', 80], ['DeepSeek', 54], ['Gemini', 47], ['Grok', 41], ['Perplexity', 28]]
+        rows: [['ChatGPT', 95], ['Claude', 86], ['Gemini', 77], ['Grok', 70], ['DeepSeek', 52], ['Perplexity', 22]]
       },
       {
         title: 'Practical Usefulness', icon: '⚡', accent: '#32e6b8',
-        rows: [['ChatGPT', 99], ['Claude', 82], ['Grok', 53], ['DeepSeek', 47], ['Gemini', 42], ['Perplexity', 36]]
+        rows: [['ChatGPT', 99], ['Gemini', 88], ['Claude', 78], ['Grok', 76], ['DeepSeek', 43], ['Perplexity', 30]]
       }
     ];
 
