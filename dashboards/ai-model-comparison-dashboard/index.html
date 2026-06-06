@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Model Comparison Dashboard — Clean v4</title>
+  <style>
+    :root {
+      --bg: #05070c;
+      --panel: rgba(12, 18, 27, 0.88);
+      --panel-soft: rgba(255, 255, 255, 0.035);
+      --border: rgba(255, 255, 255, 0.105);
+      --text: #f4f7fb;
+      --muted: #9aa7b7;
+      --track: rgba(255, 255, 255, 0.085);
+
+      --chatgpt: #32e6b8;
+      --claude: #ff9f50;
+      --perplexity: #7fe7ff;
+      --grok: #b17cff;
+      --deepseek: #5f8cff;
+      --gemini: #ff6fae;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(50, 230, 184, 0.18), transparent 34%),
+        radial-gradient(circle at 85% 12%, rgba(177, 124, 255, 0.14), transparent 34%),
+        radial-gradient(circle at 50% 100%, rgba(95, 140, 255, 0.12), transparent 42%),
+        var(--bg);
+      padding: 38px 18px 52px;
+    }
+
+    .wrap {
+      width: min(1180px, 100%);
+      margin: auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      letter-spacing: -0.075em;
+      line-height: 0.95;
+    }
+
+    .subtitle {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+      font-weight: 700;
+    }
+
+    .winner {
+      border: 1px solid rgba(50, 230, 184, 0.38);
+      background:
+        linear-gradient(135deg, rgba(50, 230, 184, 0.14), rgba(255,255,255,0.025) 42%, rgba(50, 230, 184, 0.06)),
+        var(--panel);
+      border-radius: 28px;
+      padding: clamp(24px, 4vw, 38px);
+      box-shadow: 0 0 70px rgba(50, 230, 184, 0.1), inset 0 1px 0 rgba(255,255,255,0.065);
+      margin-bottom: 20px;
+    }
+
+    .winner-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: #ffd868;
+      letter-spacing: 0.16em;
+      font-weight: 950;
+      font-size: 0.95rem;
+    }
+
+    .winner h2 {
+      margin: 0 0 12px;
+      color: var(--chatgpt);
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+      text-shadow: 0 0 34px rgba(50,230,184,0.22);
+    }
+
+    .winner p {
+      margin: 0;
+      max-width: 900px;
+      color: #dce7ef;
+      font-size: clamp(1rem, 1.7vw, 1.25rem);
+      line-height: 1.58;
+    }
+
+    .model-colors {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .chip {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.035);
+      color: var(--model);
+      font-weight: 850;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: var(--model);
+      box-shadow: 0 0 18px var(--model);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)), var(--panel);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 18px 44px rgba(0,0,0,0.2);
+    }
+
+    .card.wide { grid-column: span 2; }
+
+    .card h3 {
+      margin: 0 0 22px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.38rem;
+      letter-spacing: -0.035em;
+    }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: var(--accent);
+      font-size: 1.4rem;
+    }
+
+    .rows {
+      display: grid;
+      gap: 15px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 96px minmax(120px, 1fr) 42px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .name {
+      color: #edf4f8;
+      font-weight: 780;
+      white-space: nowrap;
+    }
+
+    .track {
+      height: 15px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: var(--track);
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.44);
+    }
+
+    .fill {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(255,255,255,0.22), var(--model));
+      box-shadow: 0 0 18px color-mix(in srgb, var(--model), transparent 50%);
+    }
+
+    .score {
+      color: var(--model);
+      text-align: right;
+      font-size: 1.05rem;
+      font-weight: 950;
+    }
+
+    .summary {
+      margin-top: 18px;
+      border: 1px solid rgba(50,230,184,0.22);
+      background: linear-gradient(135deg, rgba(50,230,184,0.08), rgba(255,255,255,0.02));
+      border-radius: 22px;
+      padding: 26px 30px;
+    }
+
+    .summary h3 {
+      margin: 0 0 16px;
+      color: var(--chatgpt);
+      font-size: clamp(1.55rem, 3vw, 2.25rem);
+      letter-spacing: -0.045em;
+    }
+
+    .bullets {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .bullet {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 13px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.035);
+      color: #ecf4f1;
+      font-weight: 700;
+    }
+
+    .check {
+      color: var(--chatgpt);
+      font-weight: 950;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 20px;
+      font-size: 0.93rem;
+    }
+
+    @media (max-width: 980px) {
+      .model-colors { grid-template-columns: repeat(2, 1fr); }
+      .grid { grid-template-columns: 1fr; }
+      .card.wide { grid-column: span 1; }
+      .bullets { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      body { padding: 24px 12px 36px; }
+      .model-colors { grid-template-columns: 1fr; }
+      .row { grid-template-columns: 82px minmax(80px, 1fr) 34px; gap: 9px; }
+      .name { font-size: 0.9rem; }
+      .card { padding: 18px; }
+      .bullets { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <h1>AI Model Comparison</h1>
+      <p class="subtitle">Custom Benchmark Summary</p>
+    </header>
+
+    <section class="winner">
+      <div class="winner-label">🏆 OVERALL WINNER</div>
+      <h2>ChatGPT</h2>
+      <p>Best overall balance of intelligence, accuracy, caution, emotional intelligence, and practical usefulness. It consistently gave the strongest all-round performance in the custom benchmark, with especially strong synthesis, uncertainty handling, and day-to-day usefulness.</p>
+    </section>
+
+    <section class="model-colors" aria-label="Model color key">
+      <div class="chip" style="--model: var(--chatgpt)"><span class="dot"></span>ChatGPT</div>
+      <div class="chip" style="--model: var(--claude)"><span class="dot"></span>Claude</div>
+      <div class="chip" style="--model: var(--perplexity)"><span class="dot"></span>Perplexity</div>
+      <div class="chip" style="--model: var(--grok)"><span class="dot"></span>Grok</div>
+      <div class="chip" style="--model: var(--deepseek)"><span class="dot"></span>DeepSeek</div>
+      <div class="chip" style="--model: var(--gemini)"><span class="dot"></span>Gemini</div>
+    </section>
+
+    <section class="grid">
+      <article class="card" style="--accent: #32e6b8">
+        <h3><span class="icon">🧠</span>Intelligence</h3>
+        <div class="rows">
+          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:95%"></span></span><span class="score">95</span></div>
+          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:92%"></span></span><span class="score">92</span></div>
+          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:84%"></span></span><span class="score">84</span></div>
+          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:79%"></span></span><span class="score">79</span></div>
+          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:70%"></span></span><span class="score">70</span></div>
+          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:68%"></span></span><span class="score">68</span></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent: #7fe7ff">
+        <h3><span class="icon">&lt;/&gt;</span>Coding</h3>
+        <div class="rows">
+          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:94%"></span></span><span class="score">94</span></div>
+          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:91%"></span></span><span class="score">91</span></div>
+          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:78%"></span></span><span class="score">78</span></div>
+          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:74%"></span></span><span class="score">74</span></div>
+          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:73%"></span></span><span class="score">73</span></div>
+          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:67%"></span></span><span class="score">67</span></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent: #b17cff">
+        <h3><span class="icon">✎</span>Writing</h3>
+        <div class="rows">
+          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:95%"></span></span><span class="score">95</span></div>
+          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:92%"></span></span><span class="score">92</span></div>
+          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:81%"></span></span><span class="score">81</span></div>
+          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:76%"></span></span><span class="score">76</span></div>
+          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:71%"></span></span><span class="score">71</span></div>
+          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:69%"></span></span><span class="score">69</span></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent: #ff6fae">
+        <h3><span class="icon">♡</span>Emotional Intelligence</h3>
+        <div class="rows">
+          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:96%"></span></span><span class="score">96</span></div>
+          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:88%"></span></span><span class="score">88</span></div>
+          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:75%"></span></span><span class="score">75</span></div>
+          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:72%"></span></span><span class="score">72</span></div>
+          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:63%"></span></span><span class="score">63</span></div>
+          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:60%"></span></span><span class="score">60</span></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent: #ffd868">
+        <h3><span class="icon">🛡</span>Data Accuracy</h3>
+        <div class="rows">
+          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:93%"></span></span><span class="score">93</span></div>
+          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:86%"></span></span><span class="score">86</span></div>
+          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:84%"></span></span><span class="score">84</span></div>
+          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:72%"></span></span><span class="score">72</span></div>
+          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:66%"></span></span><span class="score">66</span></div>
+          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:64%"></span></span><span class="score">64</span></div>
+        </div>
+      </article>
+
+      <article class="card" style="--accent: #32e6b8">
+        <h3><span class="icon">⚡</span>Practical Usefulness</h3>
+        <div class="rows">
+          <div class="row" style="--model: var(--chatgpt)"><span class="name">ChatGPT</span><span class="track"><span class="fill" style="width:97%"></span></span><span class="score">97</span></div>
+          <div class="row" style="--model: var(--claude)"><span class="name">Claude</span><span class="track"><span class="fill" style="width:89%"></span></span><span class="score">89</span></div>
+          <div class="row" style="--model: var(--perplexity)"><span class="name">Perplexity</span><span class="track"><span class="fill" style="width:82%"></span></span><span class="score">82</span></div>
+          <div class="row" style="--model: var(--grok)"><span class="name">Grok</span><span class="track"><span class="fill" style="width:74%"></span></span><span class="score">74</span></div>
+          <div class="row" style="--model: var(--deepseek)"><span class="name">DeepSeek</span><span class="track"><span class="fill" style="width:69%"></span></span><span class="score">69</span></div>
+          <div class="row" style="--model: var(--gemini)"><span class="name">Gemini</span><span class="track"><span class="fill" style="width:67%"></span></span><span class="score">67</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="summary">
+      <h3>Why ChatGPT Won</h3>
+      <div class="bullets">
+        <div class="bullet"><span class="check">✓</span>Most balanced across all categories</div>
+        <div class="bullet"><span class="check">✓</span>Strongest practical usefulness</div>
+        <div class="bullet"><span class="check">✓</span>Best uncertainty handling</div>
+        <div class="bullet"><span class="check">✓</span>Most accurate and cautious overall</div>
+      </div>
+    </section>
+
+    <footer>Based on custom benchmark tests and comparative scoring. · Clean v4 · Added Practical Usefulness</footer>
+  </main>
+</body>
+</html>
