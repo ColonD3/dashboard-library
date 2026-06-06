@@ -36,7 +36,6 @@
     }
 
     .wrap { width: min(1180px, 100%); margin: auto; }
-
     header { text-align: center; margin-bottom: 26px; }
 
     h1 {
@@ -86,7 +85,7 @@
 
     .winner p {
       margin: 0;
-      max-width: 940px;
+      max-width: 960px;
       color: #dce7ef;
       font-size: clamp(1rem, 1.7vw, 1.25rem);
       line-height: 1.58;
@@ -240,13 +239,13 @@
   <main class="wrap">
     <header>
       <h1>AI Model Comparison</h1>
-      <p class="subtitle">Custom Benchmark Summary · Wider Score Spread</p>
+      <p class="subtitle">Custom Benchmark Summary · Exaggerated Score Spread</p>
     </header>
 
     <section class="winner">
       <div class="winner-label">🏆 OVERALL WINNER</div>
       <h2>ChatGPT</h2>
-      <p>Best overall balance of intelligence, accuracy, caution, emotional intelligence, and practical usefulness. The scores are intentionally spread wider now, so each model’s actual strengths and weaknesses are more obvious instead of everything looking almost equally good.</p>
+      <p>Best overall balance of intelligence, accuracy, caution, emotional intelligence, and practical usefulness. These scores are intentionally exaggerated for readability, and Perplexity is penalized heavily in accuracy because your benchmark found it hallucinated more than the others.</p>
     </section>
 
     <section class="model-colors" aria-label="Model color key">
@@ -261,16 +260,16 @@
     <section class="grid" id="cards"></section>
 
     <section class="summary">
-      <h3>What the spread makes obvious</h3>
+      <h3>What this version makes obvious</h3>
       <div class="bullets">
-        <div class="bullet"><span class="check">✓</span>ChatGPT is the strongest all-rounder</div>
-        <div class="bullet"><span class="check">✓</span>Claude spikes hardest in writing and coding</div>
-        <div class="bullet"><span class="check">✓</span>Perplexity is mainly useful for research/data tasks</div>
-        <div class="bullet"><span class="check">✓</span>Grok, Gemini, and DeepSeek look more uneven</div>
+        <div class="bullet"><span class="check">✓</span>ChatGPT dominates as the all-rounder</div>
+        <div class="bullet"><span class="check">✓</span>Claude is the specialist for writing and coding</div>
+        <div class="bullet"><span class="check">✓</span>Perplexity gets punished for hallucination risk</div>
+        <div class="bullet"><span class="check">✓</span>Weaknesses are now visually obvious</div>
       </div>
     </section>
 
-    <footer>Based on custom benchmark tests and comparative scoring. · Wider score spread v5</footer>
+    <footer>Based on custom benchmark tests and comparative scoring. · Exaggerated spread v6</footer>
   </main>
 
   <script>
@@ -286,27 +285,27 @@
     const metrics = [
       {
         title: 'Intelligence', icon: '🧠', accent: '#32e6b8',
-        rows: [['ChatGPT', 96], ['Claude', 90], ['Perplexity', 72], ['Grok', 68], ['DeepSeek', 61], ['Gemini', 58]]
+        rows: [['ChatGPT', 99], ['Claude', 88], ['Grok', 63], ['DeepSeek', 58], ['Gemini', 50], ['Perplexity', 46]]
       },
       {
         title: 'Coding', icon: '</>', accent: '#7fe7ff',
-        rows: [['Claude', 96], ['ChatGPT', 88], ['DeepSeek', 78], ['Grok', 62], ['Perplexity', 55], ['Gemini', 50]]
+        rows: [['Claude', 99], ['ChatGPT', 87], ['DeepSeek', 74], ['Grok', 54], ['Gemini', 41], ['Perplexity', 35]]
       },
       {
         title: 'Writing', icon: '✎', accent: '#b17cff',
-        rows: [['Claude', 97], ['ChatGPT', 88], ['Grok', 66], ['Perplexity', 60], ['Gemini', 57], ['DeepSeek', 52]]
+        rows: [['Claude', 99], ['ChatGPT', 87], ['Grok', 58], ['Gemini', 45], ['Perplexity', 38], ['DeepSeek', 34]]
       },
       {
         title: 'Emotional Intelligence', icon: '♡', accent: '#ff6fae',
-        rows: [['ChatGPT', 98], ['Claude', 82], ['Gemini', 60], ['Perplexity', 48], ['Grok', 42], ['DeepSeek', 38]]
+        rows: [['ChatGPT', 99], ['Claude', 76], ['Gemini', 48], ['Perplexity', 31], ['Grok', 29], ['DeepSeek', 24]]
       },
       {
         title: 'Data Accuracy', icon: '🛡', accent: '#ffd868',
-        rows: [['ChatGPT', 95], ['Perplexity', 88], ['Claude', 82], ['DeepSeek', 58], ['Grok', 56], ['Gemini', 52]]
+        rows: [['ChatGPT', 98], ['Claude', 80], ['DeepSeek', 54], ['Gemini', 47], ['Grok', 41], ['Perplexity', 28]]
       },
       {
         title: 'Practical Usefulness', icon: '⚡', accent: '#32e6b8',
-        rows: [['ChatGPT', 98], ['Claude', 84], ['Perplexity', 76], ['Grok', 58], ['DeepSeek', 54], ['Gemini', 50]]
+        rows: [['ChatGPT', 99], ['Claude', 82], ['Grok', 53], ['DeepSeek', 47], ['Gemini', 42], ['Perplexity', 36]]
       }
     ];
 
